@@ -24,7 +24,7 @@ services:
       - "5432:5432"
   init:
     build:
-      context: images/airflow-docker
+      context: docker_images/airflow-docker
       args:
         AIRFLOW_BASE_IMAGE: *airflow_image
     image: airflow-docker
@@ -36,7 +36,7 @@ services:
 
   webserver:
     build:
-      context: images/airflow-docker
+      context: docker_images/airflow-docker
       args:
         AIRFLOW_BASE_IMAGE: *airflow_image
     image: airflow-docker
@@ -53,7 +53,7 @@ services:
 
   scheduler:
     build:
-      context: images/airflow-docker
+      context: docker_images/airflow-docker
       args:
         AIRFLOW_BASE_IMAGE: *airflow_image
     image: airflow-docker
@@ -69,29 +69,16 @@ services:
     environment: *airflow_environment
     command: scheduler
 
-  ml_base:
+  data_synthesis:
     build:
-      context: images/airflow-ml-base
-    image: airflow-ml-base
+      context: docker_images/data_synthesis
+    image: mlops-hw3-data-synthesis
     restart: "no"
 
-  predict:
+  model:
     build:
-      context: images/airflow-predict
-    image: airflow-predict
-    restart: "no"
-
-  download:
-    build:
-      context: images/airflow-download
-    image: airflow-download
-    restart: "no"
-
-
-  preprocess:
-    build:
-      context: images/airflow-preprocess
-    image: airflow-preprocess
+      context: docker_images/model
+    image: mlops-hw3-model
     restart: "no"
 
 

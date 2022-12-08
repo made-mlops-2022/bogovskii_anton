@@ -21,15 +21,15 @@ def generate_data(n_samples):
     X_categorical_encoded[:,X_categorical[:,0]] = 1
     X_encoded = np.concatenate((X_numeric, X_categorical_encoded), axis=1)
 
-    y = (coeffs.reshape(1, -1) * X_encoded + np.random.normal(0, .1, X.shape) > 0).reshape(-1)
+    y = (coeffs.reshape(1, -1) * X_encoded + np.random.normal(0, .1, X_encoded.shape) > 0).sum(axis=1)
 
     return X, y
 
 
 def save_data(X, y, path):
     os.makedirs(path, exist_ok=True)
-    np.savetxt(os.path.join(path, 'data.csv'), X, delimiter=', ')
-    np.savetxt(os.path.join(path, 'target.csv'), y, delimiter=', ')
+    np.savetxt(os.path.join(path, 'data.csv'), X, delimiter=',')
+    np.savetxt(os.path.join(path, 'target.csv'), y, delimiter=',')
 
 
 def main():

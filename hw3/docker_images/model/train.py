@@ -5,27 +5,17 @@ import os
 from sklearn.linear_model import LogisticRegression
 
 
-def load_Xy_train(path):
-    X = np.loadtxt(os.path.join(path, 'train_data.csv'), delimiter=', ')
-    y = np.loadtxt(os.path.join(path, 'train_target.csv'), delimiter=', ')
-    return X, y
+def _train(args):
+    X = np.loadtxt(os.path.join(args.data, 'train_data.csv'), delimiter=',')
+    y = np.loadtxt(os.path.join(args.data, 'train_target.csv'), delimiter=',')
 
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('dataset_path')
-    parser.add_argument('model_path')
-    return parser.parse_args()
-
-
-def main():
-    args = parse_args()
-
+    os.makedirs(args.model, exist_ok=True)
     joblib.dump(
-        LogisticRegression().fit(*load_Xy_train(args.dataset_path)),
-        os.path.join(args.model_path, 'logreg.joblib'),
+        LogisticRegression().fit(X, y),
+        os.path.join(args.model, 'logreg.joblib'),
     )
 
-
-if __name__ == '__main__':
-    main()
+def init_subparser(parser):
+    parser.add_argument('--data', type=str, required=True, help='Dataset dir')
+    parser.add_argument('--model', type=str, required=True, help='Model dir')
+    parser.set_defaults(func=_train)
