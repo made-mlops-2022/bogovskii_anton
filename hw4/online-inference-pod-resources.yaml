@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mlflow-app
+spec:
+  containers:
+  - name: mlflow-app
+    image: abogovski/mlops-hw2:v1
+    ports:
+      - containerPort: 8000
+    resources:
+      requests:
+        memory: '128Mi'
+        cpu: '250m'
+      limits:
+        memory: '512Mi'
+        cpu: 1

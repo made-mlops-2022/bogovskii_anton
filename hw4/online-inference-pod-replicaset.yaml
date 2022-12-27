@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mlflow-app-replicaset
+  labels:
+    app: mlflow-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mlflow-app
+  template:
+    metadata:
+      name: mlflow-app
+      labels:
+        app: mlflow-app
+    spec:
+      containers:
+        - name: mlflow-app
+          image: abogovski/mlops-hw2:v2
+          ports:
+            - containerPort: 8000
