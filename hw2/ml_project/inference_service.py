@@ -3,7 +3,6 @@ from prepare_model import BaselineModel
 from enum import Enum
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
 
 import joblib
 import numpy as np
@@ -11,16 +10,22 @@ import os
 
 
 app = FastAPI()
-model = BaselineModel.load(os.environ['MODEL_PATH'])
+model = None
 
 
 class Vec(BaseModel):
-    vals: List[float]
+    vals: list[float]
+
+
+@app.on_event("startup")
+async def startup_event():
+    global model
+    model = BaselineModel.load(os.environ['MODEL_PATH'])
 
 
 @app.get('/health')
 async def health():
-    return
+    assert model is not None
 
 
 @app.post('/predict')
